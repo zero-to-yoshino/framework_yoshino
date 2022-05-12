@@ -1,6 +1,8 @@
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.15")
 
+addSbtPlugin("com.typesafe.play" % "sbt-play-ebean" % "6.2.0-RC4")
+
 // Defines scaffolding (found under .g8 folder)
 // http://www.foundweekends.org/giter8/scaffolding.html
 // sbt "g8Scaffold form"

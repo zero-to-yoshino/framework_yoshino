@@ -22,10 +22,14 @@ public class HomeController extends Controller {
     }
 
     public Result test(){
+        // リロードすると同じデータが作られるので注意！！
         // User user = new User("yoshino", "test", "初testです。");
         // DB.save(user);
-        // User foundUser = DB.find(User.class, 1);
-        // System.out.println("asdff");
-        return ok(views.html.test.render());
+        // User user2 = new User("yoshino2", "test2", "test二回目です。");
+        // DB.save(user2);
+        // List<User> foundUsers = DB.find(User.class).findList();
+        // String name = foundUsers.get(1).message.toString();
+        String name = "test";
+        return ok(views.html.test.render(name));
     }
 }

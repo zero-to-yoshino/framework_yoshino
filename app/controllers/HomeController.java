@@ -1,6 +1,9 @@
 package controllers;
 
 import play.mvc.*;
+import models.User;
+import io.ebean.DB;
+import java.util.List;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -16,5 +19,12 @@ public class HomeController extends Controller {
      */
     public Result index() {
         return ok(views.html.index.render());
+    }
+
+    public Result test(){
+        User user = new User("yoshino", "test", "初testです。");
+        user.save();
+        List<User> users = User.find(User.class).findList();
+        console.log(users);
     }
 }

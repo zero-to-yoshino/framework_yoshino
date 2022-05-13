@@ -11,6 +11,12 @@ import javax.validation.constraints.NotNull;
  
 @Entity
 public class User extends Model {
+
+    public User(String name, String title, String message) {
+        this.name = name;
+        this.title = title;
+        this.message = message;
+    }
  
     @Id
     public Long id;
@@ -30,7 +36,7 @@ public class User extends Model {
         return name;
      }
   
-     public void setId(String name) {
+     public void setName(String name) {
         this.name = name;
      }
 

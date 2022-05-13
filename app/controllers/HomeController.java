@@ -22,9 +22,10 @@ public class HomeController extends Controller {
     }
 
     public Result test(){
-        User user = new User("yoshino", "test", "初testです。");
-        user.save();
-        List<User> users = User.find(User.class).findList();
-        console.log(users);
+        // User user = new User("yoshino", "test", "初testです。");
+        // DB.save(user);
+        // User foundUser = DB.find(User.class, 1);
+        // System.out.println("asdff");
+        return ok(views.html.test.render());
     }
 }

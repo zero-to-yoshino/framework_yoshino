@@ -11,6 +11,10 @@ import javax.validation.constraints.NotNull;
  
 @Entity
 public class Entry extends Model {
+   private Long id;
+   private String name;
+   private String title;
+   private String message;
 
     public Entry(String name, String title, String message) {
         this.name = name;
@@ -19,8 +23,6 @@ public class Entry extends Model {
     }
  
     @Id
-    public Long id;
-
     public Long getId() {
         return id;
      }
@@ -30,8 +32,6 @@ public class Entry extends Model {
      }
  
     @NotNull
-    public String name;
-
     public String getName() {
         return name;
      }
@@ -41,8 +41,6 @@ public class Entry extends Model {
      }
 
     @NotNull
-    public String title;
-
     public String getTitle() {
         return title;
      }
@@ -52,8 +50,6 @@ public class Entry extends Model {
      }
 
     @NotNull
-    public String message;
-
     public String getMessage() {
         return message;
      }

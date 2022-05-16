@@ -1,7 +1,9 @@
 package controllers;
 
 import models.Entry;
+// import play.api.mvc.*;
 import play.mvc.*;
+import play.mvc.Http;
 import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
@@ -16,10 +18,12 @@ import javax.inject.Inject;
  */
 public class HomeController extends Controller {
     @inject
-    FormFactory formFactory;
+    private final FormFactory formFactory;
+    private final MessagesApi messagesApi;
 
     public HomeController (FormFactory formFactory) {
         this.formFactory = formFactory;
+        this.messagesApi = messagesApi;
     }
     /**
      * An action that renders an HTML page with a welcome message.
@@ -38,9 +42,9 @@ public class HomeController extends Controller {
         return ok(views.html.index.render(foundEntries));
     }
 
-    public Result create() {
+    public Result create(Http.Request request) {
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.createForm.render(entryForm));
+        return ok(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));
     }
 
     public Result test() {

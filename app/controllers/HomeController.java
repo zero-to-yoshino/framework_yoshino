@@ -4,9 +4,8 @@ import models.Entry;
 // import play.api.mvc.*;
 import play.mvc.*;
 import play.mvc.Http;
-import play.api.data._;
-import play.api.data.Forms._;
-import play.api.data.validation.Constraints._;
+import play.data.Form;
+import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
 import java.util.List;
@@ -46,6 +45,15 @@ public class HomeController extends Controller {
     public Result create(Http.Request request) {
         Form<Entry> entryForm = formFactory.form(Entry.class);
         return ok(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));
+    }
+
+    public Result save(Http.Request request) {
+        Form<Entryr> entryrForm = formFactory.form(Entry.class).bindFromRequest(request);
+        if (entryForm.hasErrors()) {
+                // This is the HTTP rendering thread context
+                return badRequest(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));
+        }
+
     }
 
     public Result test() {

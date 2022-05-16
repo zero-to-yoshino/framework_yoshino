@@ -10,9 +10,9 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.NotNull;
  
 @Entity
-public class User extends Model {
+public class Entry extends Model {
 
-    public User(String name, String title, String message) {
+    public Entry(String name, String title, String message) {
         this.name = name;
         this.title = title;
         this.message = message;

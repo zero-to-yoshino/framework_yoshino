@@ -22,7 +22,7 @@ public class HomeController extends Controller {
     private final FormFactory formFactory;
     private MessagesApi messagesApi;
 
-    @inject
+    @Inject
     public HomeController (FormFactory formFactory, MessagesApi messagesApi) {
         this.formFactory = formFactory;
         this.messagesApi = messagesApi;
@@ -55,10 +55,10 @@ public class HomeController extends Controller {
             // This is the HTTP rendering thread context
             return badRequest(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
         } else {
+            Entry user = new Entry("yoshino", "form", "formでの登録");
+            DB.save(user);
             List<Entry> foundEntries = DB.find(Entry.class).findList();
-            String name = foundEntries.get(1).message.toString();
-            // String name = "test";
-            return ok(views.html.test.render(name));
+            return ok(views.html.index.render(foundEntries));
         }
     }
 
@@ -69,7 +69,7 @@ public class HomeController extends Controller {
         // Entry user2 = new Entry("yoshino2", "test2", "test二回目です。");
         // DB.save(user2);
         List<Entry> foundEntries = DB.find(Entry.class).findList();
-        String name = foundEntries.get(1).message.toString();
+        String name = foundEntries.get(1).getMessage();
         // String name = "test";
         return ok(views.html.test.render(name));
     }

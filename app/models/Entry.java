@@ -22,7 +22,6 @@ public class Entry extends Model {
         this.message = message;
     }
  
-    @Id
     public Long getId() {
         return id;
      }

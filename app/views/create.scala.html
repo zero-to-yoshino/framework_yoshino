@@ -4,11 +4,14 @@
 
 @main("フォーム作成"){
     @form(routes.HomeController.save()){
+        @CSRF.formField
 
         @inputText(entryForm("name"))
 
         @inputText(entryForm("title"))
 
         @inputText(entryForm("message"))
+
+        <button type="submit">新規投稿</button>
     }
 }

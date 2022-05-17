@@ -2,13 +2,9 @@
 
 @import helper._
 
-@main{
-    @form(routes.HomeController.save()){
-
-        @inputText(entryForm("name"))
-
-        @inputText(entryForm("title"))
-
-        @inputText(entryForm("message"))
-    }
+@form(routes.HomeController.save()) {
+    @CSRF.formField
+    @inputText(entryForm("name"))
+    @inputText(entryForm("title"))
+    @inputText(entryForm("message"))
 }

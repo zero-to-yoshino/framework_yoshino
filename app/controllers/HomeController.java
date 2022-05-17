@@ -17,10 +17,10 @@ import javax.inject.Inject;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    @inject
     private final FormFactory formFactory;
     private final MessagesApi messagesApi;
 
+    @inject
     public HomeController (FormFactory formFactory) {
         this.formFactory = formFactory;
         this.messagesApi = messagesApi;

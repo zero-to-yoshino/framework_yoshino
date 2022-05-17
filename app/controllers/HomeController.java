@@ -48,7 +48,7 @@ public class HomeController extends Controller {
     }
 
     public Result save(Http.Request request) {
-        Form<Entryr> entryrForm = formFactory.form(Entry.class).bindFromRequest(request);
+        Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
                 // This is the HTTP rendering thread context
                 return badRequest(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));

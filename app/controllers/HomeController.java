@@ -11,17 +11,19 @@ import io.ebean.DB;
 import java.util.List;
 // import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
+@Singleton
 public class HomeController extends Controller {
     private final FormFactory formFactory;
-    private final MessagesApi messagesApi;
+    private MessagesApi messagesApi;
 
     @inject
-    public HomeController (FormFactory formFactory) {
+    public HomeController (FormFactory formFactory, MessagesApi messagesApi) {
         this.formFactory = formFactory;
         this.messagesApi = messagesApi;
     }
@@ -44,14 +46,14 @@ public class HomeController extends Controller {
 
     public Result create(Http.Request request) {
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));
+        return ok(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
     }
 
     public Result save(Http.Request request) {
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.createForm.render(entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
         } else {
             List<Entry> foundEntries = DB.find(Entry.class).findList();
             String name = foundEntries.get(1).message.toString();

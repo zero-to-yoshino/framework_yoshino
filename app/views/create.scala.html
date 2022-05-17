@@ -2,9 +2,13 @@
 
 @import helper._
 
-@form(routes.HomeController.save()) {
-    @CSRF.formField
-    @inputText(entryForm("name"))
-    @inputText(entryForm("title"))
-    @inputText(entryForm("message"))
+@main("フォーム作成"){
+    @form(routes.HomeController.save()){
+
+        @inputText(entryForm("name"))
+
+        @inputText(entryForm("title"))
+
+        @inputText(entryForm("message"))
+    }
 }

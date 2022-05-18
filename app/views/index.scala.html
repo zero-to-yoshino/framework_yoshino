@@ -1,5 +1,7 @@
 @(foundEntries: java.util.List[Entry])
 
+@import helper._
+
 @main("掲示板") {
   <h1>投稿掲示板</h1>
   <button onclick="location.href='@routes.HomeController.create()'">新規投稿へ</button>

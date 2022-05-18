@@ -57,6 +57,24 @@ public class HomeController extends Controller {
         }
     }
 
+    public Result edit(Http.Request request, Long id) {
+        Entry entry = DB.find(Entry.class, id);
+        Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
+        return ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
+    }
+
+    public Result update(Http.Request request, Long id) {
+        Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
+        if (entryForm.hasErrors()) {
+            // This is the HTTP rendering thread context
+            return badRequest(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
+        } else {
+            Entry entry = entryForm.get();
+            DB.save(entry);
+            return Results.redirect(routes.HomeController.index());
+        }
+    }
+
     public Result test() {
         List<Entry> foundEntries = DB.find(Entry.class).findList();
         String name = foundEntries.get(1).getMessage();

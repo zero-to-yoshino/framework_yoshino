@@ -3,6 +3,7 @@ package models;
 import java.util.Date;
  
 import javax.persistence.*;
+// import javax.persistence.Id;
  
 import io.ebean.Model;
  
@@ -11,9 +12,13 @@ import javax.validation.constraints.NotNull;
  
 @Entity
 public class Entry extends Model {
+   @Id
    private Long id;
+   @NotNull
    private String name;
+   @NotNull
    private String title;
+   @NotNull
    private String message;
 
     public Entry(String name, String title, String message) {
@@ -30,7 +35,6 @@ public class Entry extends Model {
         this.id = id;
      }
  
-    @NotNull
     public String getName() {
         return name;
      }
@@ -39,7 +43,6 @@ public class Entry extends Model {
         this.name = name;
      }
 
-    @NotNull
     public String getTitle() {
         return title;
      }
@@ -48,7 +51,6 @@ public class Entry extends Model {
         this.title = title;
      }
 
-    @NotNull
     public String getMessage() {
         return message;
      }

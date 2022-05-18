@@ -2,10 +2,13 @@
 
 @main("掲示板") {
   <h1>投稿掲示板</h1>
+  <button onclick="location.href='@routes.HomeController.create()'">新規投稿へ</button>
   @for(entry <- foundEntries) {
+    <li>id：@entry.getId()</li>
     <li>名前：@entry.getName()</li>
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>
+    <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
     <p>------------</p>
   }
 }

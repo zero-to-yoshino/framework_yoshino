@@ -1,0 +1,17 @@
+@(id: Long, entryForm: Form[Entry])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@import helper._
+
+@main("フォーム作成"){
+    @form(routes.HomeController.update(id)){
+        @CSRF.formField
+
+        @inputText(entryForm("name"))
+
+        @inputText(entryForm("title"))
+
+        @inputText(entryForm("message"))
+
+        <button type="submit">エントリ更新</button>
+    }
+}

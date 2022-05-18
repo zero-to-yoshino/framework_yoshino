@@ -12,5 +12,9 @@ GET     /test                       controllers.HomeController.test()
 GET     /new                        controllers.HomeController.create(request: Request)
 POST    /new                        controllers.HomeController.save(request: Request)
 
+# Edit existing computer
+GET     /edit/:id              controllers.HomeController.edit(request: Request, id:Long)
+POST    /edit/:id              controllers.HomeController.update(request: Request, id:Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

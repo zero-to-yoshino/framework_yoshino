@@ -1,7 +1,6 @@
 package controllers;
 
 import models.Entry;
-// import play.api.mvc.*;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -9,7 +8,6 @@ import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
 import java.util.List;
-// import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -27,17 +25,6 @@ public class HomeController extends Controller {
         this.formFactory = formFactory;
         this.messagesApi = messagesApi;
     }
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
-    // public Result index() {
-    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
-    //     // String name = foundUsers.get(1).message.toString();
-    //     return ok(views.html.index.render(foundEntries));
-    // }
 
     public Result index(Http.Request request) {
         List<Entry> foundEntries = DB.find(Entry.class).findList();
@@ -55,7 +42,6 @@ public class HomeController extends Controller {
             Entry entry = entryForm.get();
             DB.save(entry);
             return Results.redirect(routes.HomeController.index());
-            // return ok(views.html.index.render(foundEntries));
         }
     }
 
@@ -84,13 +70,5 @@ public class HomeController extends Controller {
     public Result delete(Long id) {
         DB.delete(Entry.class, id);
         return Results.redirect(routes.HomeController.index());
-
     }
-
-    // public Result test() {
-    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
-    //     String name = foundEntries.get(1).getMessage();
-        // String name = "test";
-        // return ok(views.html.test.render(name));
-//     }
 }

@@ -14,6 +14,7 @@
 
         <button type="submit">エントリ更新</button>
     }
+    
     @form(routes.HomeController.delete(id)){
         @CSRF.formField
         <button class="btn btn-danger" type="submit">エントリ削除</button>

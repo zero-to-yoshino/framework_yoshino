@@ -9,7 +9,6 @@ create table entry (
   title                         varchar(255) not null,
   message                       varchar(255) not null,
   create_date                   timestamp,
-  update_date                   timestamp not null,
   constraint pk_entry primary key (id)
 );
 

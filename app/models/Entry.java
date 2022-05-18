@@ -7,6 +7,7 @@ import javax.persistence.*;
  
 import io.ebean.Model;
  
+import play.data.format.Formats.DateTime;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.NotNull;
  
@@ -20,12 +21,14 @@ public class Entry extends Model {
    private String title;
    @NotNull
    private String message;
+   @DateTime(pattern="yyyy-MM-dd")
+    private Date createDate;
 
-    public Entry(String name, String title, String message) {
-        this.name = name;
-        this.title = title;
-        this.message = message;
-    }
+   //  public Entry(String name, String title, String message) {
+   //      this.name = name;
+   //      this.title = title;
+   //      this.message = message;
+   //  }
  
     public Long getId() {
         return id;
@@ -58,9 +61,6 @@ public class Entry extends Model {
      public void setMessage(String message) {
         this.message = message;
      }
- 
-    @PastOrPresent
-    public Date createDate;
 
     public Date getCreateDate() {
         return createDate;
@@ -68,17 +68,6 @@ public class Entry extends Model {
   
      public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-     }
- 
-    @Version
-    public Date updateDate;
-
-    public Date getUpdateDate() {
-        return updateDate;
-     }
-  
-     public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
      }
  
     // public String toString() {

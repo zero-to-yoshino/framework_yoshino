@@ -6,15 +6,18 @@
 GET     /                           controllers.HomeController.index()
 
 # test script
-GET     /test                       controllers.HomeController.test()
+# GET     /test                       controllers.HomeController.test()
 
 # create and make form
 GET     /new                        controllers.HomeController.create(request: Request)
 POST    /new                        controllers.HomeController.save(request: Request)
 
-# Edit existing computer
-GET     /edit/:id              controllers.HomeController.edit(request: Request, id:Long)
-POST    /edit/:id              controllers.HomeController.update(request: Request, id:Long)
+# Edit entry
+GET     /:id                        controllers.HomeController.edit(request: Request, id:Long)
+POST    /:id                        controllers.HomeController.update(request: Request, id:Long)
+
+# Delete entry
+POST    /:id/delete                 controllers.HomeController.delete(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

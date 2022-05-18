@@ -33,22 +33,24 @@ public class HomeController extends Controller {
      * this method will be called when the application receives a
      * <code>GET</code> request with a path of <code>/</code>.
      */
-    public Result index() {
-        List<Entry> foundEntries = DB.find(Entry.class).findList();
-        // String name = foundUsers.get(1).message.toString();
-        return ok(views.html.index.render(foundEntries));
-    }
+    // public Result index() {
+    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
+    //     // String name = foundUsers.get(1).message.toString();
+    //     return ok(views.html.index.render(foundEntries));
+    // }
 
-    public Result create(Http.Request request) {
+    public Result index(Http.Request request) {
+        List<Entry> foundEntries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
+        return ok(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
     }
 
     public Result save(Http.Request request) {
+        List<Entry> foundEntries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
             DB.save(entry);

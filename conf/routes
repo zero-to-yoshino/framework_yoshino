@@ -2,15 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index()
-
-# test script
-# GET     /test                       controllers.HomeController.test()
-
 # create and make form
-GET     /new                        controllers.HomeController.create(request: Request)
-POST    /new                        controllers.HomeController.save(request: Request)
+GET     /                        controllers.HomeController.index(request: Request)
+POST    /                        controllers.HomeController.save(request: Request)
 
 # Edit entry
 GET     /:id                        controllers.HomeController.edit(request: Request, id:Long)

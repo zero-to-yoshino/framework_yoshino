@@ -1,15 +1,14 @@
 package controllers;
 
 import models.Entry;
-// import play.api.mvc.*;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
+import java.sql.Timestamp;
 import java.util.List;
-// import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -27,33 +26,24 @@ public class HomeController extends Controller {
         this.formFactory = formFactory;
         this.messagesApi = messagesApi;
     }
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
-    public Result index() {
-        List<Entry> foundEntries = DB.find(Entry.class).findList();
-        // String name = foundUsers.get(1).message.toString();
-        return ok(views.html.index.render(foundEntries));
-    }
 
-    public Result create(Http.Request request) {
+    public Result index(Http.Request request) {
+        List<Entry> foundEntries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
+        return ok(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
     }
 
     public Result save(Http.Request request) {
+        List<Entry> foundEntries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.create.render(entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
+            entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
             DB.save(entry);
             return Results.redirect(routes.HomeController.index());
-            // return ok(views.html.index.render(foundEntries));
         }
     }
 
@@ -71,10 +61,8 @@ public class HomeController extends Controller {
             return badRequest(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
-            savedEntry.setName(entry.getName());
-            savedEntry.setTitle(entry.getTitle());
-            savedEntry.setMessage(entry.getMessage());
-            DB.update(savedEntry);
+            entry.setId(savedEntry.getId());
+            DB.update(entry);
             return Results.redirect(routes.HomeController.index());
         }
     }
@@ -82,13 +70,5 @@ public class HomeController extends Controller {
     public Result delete(Long id) {
         DB.delete(Entry.class, id);
         return Results.redirect(routes.HomeController.index());
-
     }
-
-    // public Result test() {
-    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
-    //     String name = foundEntries.get(1).getMessage();
-        // String name = "test";
-        // return ok(views.html.test.render(name));
-//     }
 }

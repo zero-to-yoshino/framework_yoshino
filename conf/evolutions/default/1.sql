@@ -8,8 +8,7 @@ create table entry (
   name                          varchar(255) not null,
   title                         varchar(255) not null,
   message                       varchar(255) not null,
-  create_date                   timestamp,
-  update_date                   timestamp not null,
+  create_date                   timestamp default current_timestamp,
   constraint pk_entry primary key (id)
 );
 

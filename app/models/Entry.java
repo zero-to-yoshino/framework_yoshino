@@ -21,8 +21,8 @@ public class Entry extends Model {
    private String title;
    @NotNull
    private String message;
-   @DateTime(pattern="yyyy-MM-dd")
-    private Date createDate;
+   @Column(columnDefinition = "timestamp default current_timestamp")
+   private Date createDate;
 
    //  public Entry(String name, String title, String message) {
    //      this.name = name;

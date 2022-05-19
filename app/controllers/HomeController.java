@@ -7,6 +7,7 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,6 +41,7 @@ public class HomeController extends Controller {
             return badRequest(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
+            entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
             DB.save(entry);
             return Results.redirect(routes.HomeController.index());
         }
@@ -59,10 +61,8 @@ public class HomeController extends Controller {
             return badRequest(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
-            savedEntry.setName(entry.getName());
-            savedEntry.setTitle(entry.getTitle());
-            savedEntry.setMessage(entry.getMessage());
-            DB.update(savedEntry);
+            entry.setId(savedEntry.getId());
+            DB.update(entry);
             return Results.redirect(routes.HomeController.index());
         }
     }

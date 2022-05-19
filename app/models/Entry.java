@@ -1,11 +1,13 @@
 package models;
  
+import java.security.Timestamp;
 import java.util.Date;
  
 import javax.persistence.*;
 // import javax.persistence.Id;
  
 import io.ebean.Model;
+// import io.ebean.annotation.*;
  
 import play.data.format.Formats.DateTime;
 import javax.validation.constraints.PastOrPresent;
@@ -21,7 +23,7 @@ public class Entry extends Model {
    private String title;
    @NotNull
    private String message;
-   @Column(columnDefinition = "timestamp default current_timestamp")
+   // @WhenCreated
    private Date createDate;
 
    //  public Entry(String name, String title, String message) {

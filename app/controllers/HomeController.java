@@ -27,6 +27,7 @@ public class HomeController extends Controller {
         this.messagesApi = messagesApi;
     }
 
+    // 新規投稿
     public Result index(Http.Request request) {
         List<Entry> foundEntries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
@@ -41,12 +42,14 @@ public class HomeController extends Controller {
             return badRequest(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
+            // タイムスタンプ外挿
             entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
             DB.save(entry);
             return Results.redirect(routes.HomeController.index());
         }
     }
 
+    // 投稿更新
     public Result edit(Http.Request request, Long id) {
         Entry entry = DB.find(Entry.class, id);
         Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
@@ -67,8 +70,14 @@ public class HomeController extends Controller {
         }
     }
 
+    // 投稿削除
     public Result delete(Long id) {
         DB.delete(Entry.class, id);
         return Results.redirect(routes.HomeController.index());
     }
+
+    // 検索機能
+    // public Result search(){
+    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
+    // }
 }

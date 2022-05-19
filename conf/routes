@@ -3,8 +3,8 @@
 # ~~~~
 
 # create and make form
-GET     /                        controllers.HomeController.index(request: Request)
-POST    /                        controllers.HomeController.save(request: Request)
+GET     /                           controllers.HomeController.index(request: Request)
+POST    /                           controllers.HomeController.save(request: Request)
 
 # Edit entry
 GET     /:id                        controllers.HomeController.edit(request: Request, id:Long)

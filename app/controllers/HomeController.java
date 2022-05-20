@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Entry;
+import objects.Search;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -8,6 +9,7 @@ import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -77,7 +79,45 @@ public class HomeController extends Controller {
     }
 
     // 検索機能
-    // public Result search(){
+    // foundEntriesはこの後検索結果によって数を減らす
+    public Result search(Http.Request request){
+        List<Entry> foundEntries = DB.find(Entry.class).findList();
+        Form<Search> searchForm = formFactory.form(Search.class);
+        List<String> searchList = new ArrayList<String>();
+        // searchList.add("aaa");
+        // searchList.add("bbb");
+        // for (int i = 0; i < searchList.size(); i++) {
+        //     if (i == 0){
+        //         searchListQuery += searchList.get(i);
+        //     } else {
+        //         searchListQuery += "&" + searchList.get(i);
+        //     }
+        // }
+        return ok(views.html.search.render(searchForm, request, messagesApi.preferred(request)));
+    }
+
+    // public Result searchResult(Http.Request request, List<String> searchList){
     //     List<Entry> foundEntries = DB.find(Entry.class).findList();
+    //     Form<Search> searchForm = formFactory.form(Search.class);
+    //     searchList = new ArrayList<String>();
+    //     if (entryForm.hasErrors()) {
+    //         // This is the HTTP rendering thread context
+    //         return badRequest(views.html.search.render(foundEntries, searchForm, searchList, request, messagesApi.preferred(request)));
+    //     } else {
+    //         Entry entry = entryForm.get();
+    //         entry.setId(savedEntry.getId());
+    //         DB.update(entry);
+    //         return Results.redirect(routes.HomeController.index());
+    //     }
     // }
+
+
+    // 任意のテスト
+
+    public Result test(){
+        // Search search = new Search();
+        // search.setSearchInput("searchInput");
+        // return ok(views.html.test.render(search.getSearchInput()));
+        return ok(views.html.test.render());
+    }
 }

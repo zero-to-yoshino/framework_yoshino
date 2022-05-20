@@ -1,0 +1,13 @@
+@import objects.Search
+@import helper._
+
+@(entryForm: Form[Search])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@main("検索"){
+    <h1>検索欄</h1>
+    @form(routes.HomeController.search()){
+        @CSRF.formField
+    
+        @inputText(entryForm("searchInput"))
+    }
+}

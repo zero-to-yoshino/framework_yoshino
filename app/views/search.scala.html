@@ -5,7 +5,6 @@
 
 @main("検索"){
     <h1>検索フォーム</h1>
-    <h2>@searchWord</h2>
     @form(routes.HomeController.searchDo(searchWord)){
         @CSRF.formField
     
@@ -13,6 +12,8 @@
         
         <button onclick="location.href='@routes.HomeController.searchDo(searchWord)'">検索</button>
     }
+
+    <button onclick="location.href='@routes.HomeController.index()'">一覧へ戻る</button>
 
     @for(entry <- foundEntries) {
         <p>------------</p>

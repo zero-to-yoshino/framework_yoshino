@@ -16,6 +16,8 @@
     <button type="submit">新規投稿</button>
   }
 
+  <button onclick="location.href='@routes.HomeController.search()'">投稿検索</button>
+
   @for(entry <- foundEntries) {
     <p>------------</p>
     <li>名前：@entry.getName()</li>

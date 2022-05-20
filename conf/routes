@@ -8,7 +8,9 @@ GET     /                           controllers.HomeController.index(request: Re
 POST    /                           controllers.HomeController.save(request: Request)
 
 # Search entry
-GET     /search/                    controllers.HomeController.search(request: Request)
+GET     /search                    controllers.HomeController.search(request: Request)
+
+GET     /search/:searchWord        controllers.HomeController.searchDo(request: Request, searchWord: String)
 
 # test
 GET     /test/                       controllers.HomeController.test()

@@ -81,35 +81,31 @@ public class HomeController extends Controller {
     // 検索機能
     // foundEntriesはこの後検索結果によって数を減らす
     public Result search(Http.Request request){
-        List<Entry> foundEntries = DB.find(Entry.class).findList();
+        List<Entry> foundEntries =new ArrayList<Entry>();
         Form<Search> searchForm = formFactory.form(Search.class);
-        List<String> searchList = new ArrayList<String>();
-        // searchList.add("aaa");
-        // searchList.add("bbb");
-        // for (int i = 0; i < searchList.size(); i++) {
-        //     if (i == 0){
-        //         searchListQuery += searchList.get(i);
-        //     } else {
-        //         searchListQuery += "&" + searchList.get(i);
-        //     }
-        // }
-        return ok(views.html.search.render(searchForm, request, messagesApi.preferred(request)));
+        String searchWord = "default";
+        return ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
     }
 
-    // public Result searchResult(Http.Request request, List<String> searchList){
-    //     List<Entry> foundEntries = DB.find(Entry.class).findList();
-    //     Form<Search> searchForm = formFactory.form(Search.class);
-    //     searchList = new ArrayList<String>();
-    //     if (entryForm.hasErrors()) {
-    //         // This is the HTTP rendering thread context
-    //         return badRequest(views.html.search.render(foundEntries, searchForm, searchList, request, messagesApi.preferred(request)));
-    //     } else {
-    //         Entry entry = entryForm.get();
-    //         entry.setId(savedEntry.getId());
-    //         DB.update(entry);
-    //         return Results.redirect(routes.HomeController.index());
-    //     }
-    // }
+    public Result searchDo(Http.Request request, String searchWord){
+        List<Entry> Entries = DB.find(Entry.class).findList();
+        List<Entry> foundEntries =new ArrayList<Entry>();
+        Form<Search> searchForm = formFactory.form(Search.class).bindFromRequest(request);
+        searchWord = "default";
+        if (searchForm.hasErrors()) {
+            // This is the HTTP rendering thread context
+            return badRequest(views.html.search.render(Entries, searchForm, searchWord, request, messagesApi.preferred(request)));
+        } else {
+            Search search = searchForm.get();
+            searchWord = search.getSearchInput();
+            for (Entry entry : Entries) {
+                if (entry.getTitle().contains(searchWord) || entry.getMessage().contains(searchWord)) {
+                    foundEntries.add(entry);
+                } 
+            }
+            return ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
+        }
+    }
 
 
     // 任意のテスト

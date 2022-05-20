@@ -1,13 +1,25 @@
 @import objects.Search
 @import helper._
 
-@(entryForm: Form[Search])(implicit request: Http.Request, messages: play.i18n.Messages)
+@(foundEntries: java.util.List[Entry], entryForm: Form[Search], searchWord: String)(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("検索"){
-    <h1>検索欄</h1>
-    @form(routes.HomeController.search()){
+    <h1>検索フォーム</h1>
+    <h2>@searchWord</h2>
+    @form(routes.HomeController.searchDo(searchWord)){
         @CSRF.formField
     
         @inputText(entryForm("searchInput"))
+        
+        <button onclick="location.href='@routes.HomeController.searchDo(searchWord)'">検索</button>
     }
+
+    @for(entry <- foundEntries) {
+        <p>------------</p>
+        <li>名前：@entry.getName()</li>
+        <li>タイトル：@entry.getTitle()</li>
+        <li>メッセージ：@entry.getMessage()</li>
+        <li>投稿日時：@entry.getCreateDate()</li>
+        <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+      }
 }

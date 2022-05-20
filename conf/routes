@@ -4,11 +4,21 @@
 
 # create and make form
 GET     /                           controllers.HomeController.index(request: Request)
+
 POST    /                           controllers.HomeController.save(request: Request)
 
+# Search entry
+GET     /search                    controllers.HomeController.search(request: Request)
+
+GET     /search/:searchWord        controllers.HomeController.searchDo(request: Request, searchWord: String)
+
+# test
+GET     /test/                       controllers.HomeController.test()
+
 # Edit entry
-GET     /:id                        controllers.HomeController.edit(request: Request, id:Long)
-POST    /:id                        controllers.HomeController.update(request: Request, id:Long)
+GET     /:id/                       controllers.HomeController.edit(request: Request, id:Long)
+
+POST    /:id/                       controllers.HomeController.update(request: Request, id:Long)
 
 # Delete entry
 POST    /:id/delete                 controllers.HomeController.delete(id:Long)

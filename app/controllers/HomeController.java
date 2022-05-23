@@ -32,17 +32,17 @@ public class HomeController extends Controller {
 
     // 新規投稿
     public Result index(Http.Request request) {
-        List<Entry> foundEntries = DB.find(Entry.class).findList();
+        List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
+        return ok(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
     public Result save(Http.Request request) {
-        List<Entry> foundEntries = DB.find(Entry.class).findList();
+        List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.index.render(foundEntries, entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
             // タイムスタンプ外挿
@@ -84,6 +84,7 @@ public class HomeController extends Controller {
     public Result search(Http.Request request){
         List<Entry> foundEntries =new ArrayList<Entry>();
         Form<Search> searchForm = formFactory.form(Search.class);
+        // searchWordによってURIを変更しています
         String searchWord = "default";
         return ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
     }

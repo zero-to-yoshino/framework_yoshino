@@ -4,6 +4,8 @@
 
 @main("投稿掲示板"){
   <h1>投稿掲示板</h1>
+  <button onclick="location.href='@routes.SessionController.logout()'">ログアウト</button>
+
   @form(routes.HomeController.save()){
     @CSRF.formField
 

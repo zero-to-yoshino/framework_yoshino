@@ -31,12 +31,14 @@ public class HomeController extends Controller {
     }
 
     // 新規投稿
+    @Security.Authenticated(Secured.class)
     public Result index(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return ok(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
+    @Security.Authenticated(Secured.class)
     public Result save(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
@@ -53,12 +55,14 @@ public class HomeController extends Controller {
     }
 
     // 投稿更新
+    @Security.Authenticated(Secured.class)
     public Result edit(Http.Request request, Long id) {
         Entry entry = DB.find(Entry.class, id);
         Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
-        return ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
     }
 
+    @Security.Authenticated(Secured.class)
     public Result update(Http.Request request, Long id) {
         Entry savedEntry = DB.find(Entry.class, id);
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
@@ -74,6 +78,7 @@ public class HomeController extends Controller {
     }
 
     // 投稿削除
+    @Security.Authenticated(Secured.class)
     public Result delete(Long id) {
         DB.delete(Entry.class, id);
         return Results.redirect(routes.HomeController.index());
@@ -81,14 +86,16 @@ public class HomeController extends Controller {
 
     // 検索機能
     // foundEntriesはこの後検索結果によって数を減らす
+    @Security.Authenticated(Secured.class)
     public Result search(Http.Request request){
         List<Entry> foundEntries =new ArrayList<Entry>();
         Form<Search> searchForm = formFactory.form(Search.class);
         // searchWordによってURIを変更しています
         String searchWord = "default";
-        return ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
     }
 
+    @Security.Authenticated(Secured.class)
     public Result searchDo(Http.Request request, String searchWord){
         List<Entry> Entries = DB.find(Entry.class).findList();
         List<Entry> foundEntries =new ArrayList<Entry>();
@@ -100,12 +107,13 @@ public class HomeController extends Controller {
         } else {
             Search search = searchForm.get();
             searchWord = search.getSearchInput();
+            // foundEntries = DB.find(Entry.class).where().or().eq("title", searchWord).eq("message", searchWord).endOr().findList();
             for (Entry entry : Entries) {
                 if (entry.getTitle().contains(searchWord) || entry.getMessage().contains(searchWord)) {
                     foundEntries.add(entry);
                 } 
             }
-            return ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
+            return Results.ok(views.html.search.render(foundEntries, searchForm, searchWord, request, messagesApi.preferred(request)));
         }
     }
 
@@ -116,6 +124,6 @@ public class HomeController extends Controller {
         // Search search = new Search();
         // search.setSearchInput("searchInput");
         // return ok(views.html.test.render(search.getSearchInput()));
-        return ok(views.html.test.render());
+        return Results.ok(views.html.test.render());
     }
 }

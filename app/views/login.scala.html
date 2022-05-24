@@ -1,0 +1,17 @@
+@(loginForm: Form[User])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@import helper._
+
+@main("ログイン"){
+    <h1>ログイン</h1>
+    @form(routes.SessionController.authenticate()){
+
+        @CSRF.formField
+    
+        @inputText(loginForm("email"))
+    
+        @inputText(loginForm("password"))
+    
+        <button type="submit">ログイン</button>
+    }
+}

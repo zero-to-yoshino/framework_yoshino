@@ -7,6 +7,11 @@ GET     /login                      controllers.SessionController.login(request:
 
 POST    /login                      controllers.SessionController.authenticate(request: Request)
 
+# create new user
+GET     /login/new                  controllers.SessionController.newUser(request: Request)
+
+POST    /login/new                  controllers.SessionController.save(request: Request)
+
 # create and make form
 GET     /                           controllers.HomeController.index(request: Request)
 

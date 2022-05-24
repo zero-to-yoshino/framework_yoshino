@@ -1,0 +1,19 @@
+@(userForm: Form[User])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@import helper._
+
+@main("新規登録"){
+    <h1>新規登録</h1>
+    @form(routes.SessionController.save()){
+
+        @CSRF.formField
+
+        @inputText(userForm("name"))
+    
+        @inputText(userForm("email"))
+    
+        @inputText(userForm("password"))
+    
+        <button type="submit">新規登録</button>
+    }
+}

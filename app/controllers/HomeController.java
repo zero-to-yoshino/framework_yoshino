@@ -100,6 +100,7 @@ public class HomeController extends Controller {
         } else {
             Search search = searchForm.get();
             searchWord = search.getSearchInput();
+            // foundEntries = DB.find(Entry.class).where().or().eq("title", searchWord).eq("message", searchWord).endOr().findList();
             for (Entry entry : Entries) {
                 if (entry.getTitle().contains(searchWord) || entry.getMessage().contains(searchWord)) {
                     foundEntries.add(entry);

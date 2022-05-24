@@ -30,15 +30,33 @@ public class SessionController extends Controller {
     public Result authenticate(Http.Request request) {
         Form<User> loginForm = formFactory.form(User.class).bindFromRequest(request);
         if (loginForm.hasErrors()) {
-            // This is the HTTP rendering thread context
             return badRequest(views.html.login.render(loginForm, request, messagesApi.preferred(request)));
         } else {
-            User user = loginForm.get();
-            if (user.getEmail().equals("a@b") && user.getPassword().equals("yoshino")) {
-                return Results.redirect(routes.HomeController.index());
-            } else {
+            User formUser = loginForm.get();
+            User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
+            if (foundUser == null) {
                 return Results.redirect(routes.SessionController.login());
+            } else {
+                return Results.redirect(routes.HomeController.index());
             }
+        }
+    }
+
+    public Result newUser(Http.Request request) {
+        Form<User> userForm = formFactory.form(User.class);
+        return ok(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
+    }
+
+    public Result save(Http.Request request) {
+        Form<User> userForm = formFactory.form(User.class).bindFromRequest(request);
+        if (userForm.hasErrors()) {
+            // This is the HTTP rendering thread context
+            return badRequest(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
+        } else {
+            User user = userForm.get();
+            // タイムスタンプ外挿
+            DB.save(user);
+            return Results.redirect(routes.SessionController.login());
         }
     }
 }

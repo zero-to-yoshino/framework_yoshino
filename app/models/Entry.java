@@ -25,6 +25,8 @@ public class Entry extends Model {
    private String message;
    // @WhenCreated
    private Date createDate;
+   @ManyToOne
+   private User user;
 
    //  public Entry(String name, String title, String message) {
    //      this.name = name;
@@ -70,6 +72,14 @@ public class Entry extends Model {
   
      public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+     }
+
+     public User getUser() {
+        return user;
+     }
+
+     public void setUser(User user) {
+        this.user = user;
      }
  
     // public String toString() {

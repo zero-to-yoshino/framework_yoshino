@@ -5,21 +5,24 @@ import javax.persistence.*;
  
 import io.ebean.Model;
 // import io.ebean.annotation.*;
+import java.util.List;
  
 @Entity
 public class User extends Model{
     @Id
-    private Long userId;
+    private Long id;
 
     private String name;
     private String email;
     private String password;
+    @OneToMany(mappedBy="user")
+    private List<Entry> Entries;
 
     public Long getUserId(){
-        return userId;
+        return id;
     }
-    public void setUserId(Long userId){
-        this.userId = userId;
+    public void setUserId(Long id){
+        this.id = id;
     }
 
     public String getName(){
@@ -42,5 +45,12 @@ public class User extends Model{
     }
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public List<Entry> getEntries(){
+        return Entries;
+    }
+    public void setEntries(List<Entry> Entries){
+        this.Entries = Entries;
     }
 }

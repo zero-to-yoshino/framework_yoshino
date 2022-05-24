@@ -37,7 +37,7 @@ public class SessionController extends Controller {
             if (foundUser == null) {
                 return Results.redirect(routes.SessionController.login());
             } else {
-                return Results.redirect(routes.HomeController.index());
+                return Results.redirect(routes.HomeController.index()).addingToSession(request, "email", foundUser.getEmail());
             }
         }
     }

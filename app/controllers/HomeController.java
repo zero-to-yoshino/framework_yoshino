@@ -31,6 +31,7 @@ public class HomeController extends Controller {
     }
 
     // 新規投稿
+    @Security.Authenticated(Secured.class)
     public Result index(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);

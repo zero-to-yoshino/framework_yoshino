@@ -22,9 +22,10 @@ public class SessionController extends Controller {
         this.messagesApi = messagesApi;
     }
 
+    // ログイン処理
     public Result login(Http.Request request) {
         Form<User> loginForm = formFactory.form(User.class);
-        return ok(views.html.login.render(loginForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.login.render(loginForm, request, messagesApi.preferred(request))).withNewSession();
     }
 
     public Result authenticate(Http.Request request) {
@@ -42,9 +43,15 @@ public class SessionController extends Controller {
         }
     }
 
+    // ログアウト処理
+    public Result logout(Http.Request request) {
+        return Results.redirect(routes.SessionController.login()).removingFromSession(request, "email");
+    }
+
+    // 新規登録処理
     public Result newUser(Http.Request request) {
         Form<User> userForm = formFactory.form(User.class);
-        return ok(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
     }
 
     public Result save(Http.Request request) {

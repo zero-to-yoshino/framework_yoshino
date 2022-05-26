@@ -4,7 +4,6 @@ package models;
 import java.util.Date;
  
 import javax.persistence.*;
-// import javax.persistence.Id;
  
 import io.ebean.Model;
 import play.data.validation.Constraints;
@@ -18,11 +17,14 @@ import javax.validation.constraints.NotNull;
 public class Entry extends Model {
    @Id
    private Long id;
-   @Constraints.Required
+   @NotNull
+   @Constraints.Required(message="必須入力です")
    private String name;
-    @Constraints.Required
+   @NotNull
+   @Constraints.Required(message="必須入力です")
    private String title;
-    @Constraints.Required
+   @NotNull
+   @Constraints.Required(message="必須入力です")
    private String message;
    // @WhenCreated
    private Date createDate;

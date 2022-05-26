@@ -8,6 +8,8 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
 import io.ebean.DB;
+import views.html.login;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -28,15 +30,20 @@ public class SessionController extends Controller {
         return Results.ok(views.html.login.render(loginForm, request, messagesApi.preferred(request))).withNewSession();
     }
 
+    public Result loginError(Http.Request request) {
+        Form<User> loginForm = formFactory.form(User.class);
+        return Results.ok(views.html.login_error.render(loginForm, request, messagesApi.preferred(request))).withNewSession();
+    }
+
     public Result authenticate(Http.Request request) {
         Form<User> loginForm = formFactory.form(User.class).bindFromRequest(request);
         if (loginForm.hasErrors()) {
-            return badRequest(views.html.login.render(loginForm, request, messagesApi.preferred(request)));
+            return badRequest(login.render(loginForm, request, messagesApi.preferred(request)));
         } else {
             User formUser = loginForm.get();
             User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
             if (foundUser == null) {
-                return Results.redirect(routes.SessionController.login());
+                return Results.redirect(routes.SessionController.loginError());
             } else {
                 return Results.redirect(routes.HomeController.index()).addingToSession(request, "email", foundUser.getEmail());
             }

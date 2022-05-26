@@ -9,16 +9,20 @@
   @form(routes.HomeController.save()){
     @CSRF.formField
 
-    @inputText(entryForm("name"))
+    @inputText(entryForm("name"), Symbol("required")-> "required")
 
-    @inputText(entryForm("title"))
+    @inputText(entryForm("title"), Symbol("required")-> "required")
 
-    @inputText(entryForm("message"))
+    @inputText(entryForm("message"), Symbol("required")-> "required")
 
     <button type="submit">新規投稿</button>
   }
 
   <button onclick="location.href='@routes.HomeController.search()'">投稿検索</button>
+
+  @request.flash.asScala().data.map { case (name, value) =>
+    <div class="@name">@value</div>
+  }
 
   @for(entry <- Entries) {
     <p>------------</p>

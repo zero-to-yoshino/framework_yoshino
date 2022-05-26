@@ -18,13 +18,10 @@ public class Entry extends Model {
    @Id
    private Long id;
    @NotNull
-   @Constraints.Required(message="必須入力です")
    private String name;
    @NotNull
-   @Constraints.Required(message="必須入力です")
    private String title;
    @NotNull
-   @Constraints.Required(message="必須入力です")
    private String message;
    // @WhenCreated
    private Date createDate;

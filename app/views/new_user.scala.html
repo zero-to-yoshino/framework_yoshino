@@ -8,11 +8,11 @@
 
         @CSRF.formField
 
-        @inputText(userForm("name"))
+        @inputText(userForm("name"), Symbol("required")-> "required")
     
-        @inputText(userForm("email"))
+        @inputText(userForm("email"), Symbol("required")-> "required")
     
-        @inputText(userForm("password"))
+        @inputText(userForm("password"), Symbol("required")-> "required")
     
         <button type="submit">新規登録</button>
     }

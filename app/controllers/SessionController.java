@@ -36,19 +36,16 @@ public class SessionController extends Controller {
             User formUser = loginForm.get();
             User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
             if (foundUser == null) {
-                return Results.redirect(routes.SessionController.login())
-                .flashing("failure", "メールアドレスかパスワードが間違っています。");
+                return Results.redirect(routes.SessionController.login()).flashing("failure", "メールアドレスかパスワードが間違っています。");
             } else {
-                return Results.redirect(routes.HomeController.index())
-                .addingToSession(request, "email", foundUser.getEmail())
-                .flashing("success", "ログインしました！");
+                return Results.redirect(routes.HomeController.index()).addingToSession(request, "id", String.valueOf(foundUser.getUserId())).flashing("success", "ログインしました！");
             }
         }
     }
 
     // ログアウト処理
     public Result logout(Http.Request request) {
-        return Results.redirect(routes.SessionController.login()).removingFromSession(request, "email");
+        return Results.redirect(routes.SessionController.login()).removingFromSession(request, "id");
     }
 
     // 新規登録処理

@@ -12,7 +12,7 @@ public class Secured extends Security.Authenticator {
 
     @Override
     public Optional<String> getUsername(Http.Request req) {
-        return req.session().getOptional("email");
+        return req.session().getOptional("id");
     }
 
     @Override

@@ -8,12 +8,16 @@
 
         @CSRF.formField
     
-        @inputText(loginForm("email"))
+        @inputText(loginForm("email"), Symbol("required")-> "required")
     
-        @inputText(loginForm("password"))
+        @inputText(loginForm("password"), Symbol("required")-> "required")
     
         <button type="submit">ログイン</button>
     }
+
+    @request.flash.asScala().data.map { case (name, value) =>
+        <div class="@name">@value</div>
+      }
 
     <button onclick="location.href='@routes.SessionController.newUser()'">新規登録</button>
 }

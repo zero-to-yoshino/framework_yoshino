@@ -36,9 +36,12 @@ public class SessionController extends Controller {
             User formUser = loginForm.get();
             User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
             if (foundUser == null) {
-                return Results.redirect(routes.SessionController.login());
+                return Results.redirect(routes.SessionController.login())
+                .flashing("failure", "メールアドレスかパスワードが間違っています。");
             } else {
-                return Results.redirect(routes.HomeController.index()).addingToSession(request, "email", foundUser.getEmail());
+                return Results.redirect(routes.HomeController.index())
+                .addingToSession(request, "email", foundUser.getEmail())
+                .flashing("success", "ログインしました！");
             }
         }
     }
@@ -63,7 +66,7 @@ public class SessionController extends Controller {
             User user = userForm.get();
             // タイムスタンプ外挿
             DB.save(user);
-            return Results.redirect(routes.SessionController.login());
+            return Results.redirect(routes.SessionController.login()).flashing("success", "新規登録しました！");
         }
     }
 }

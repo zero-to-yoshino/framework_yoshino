@@ -50,7 +50,7 @@ public class HomeController extends Controller {
             // タイムスタンプ外挿
             entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
             DB.save(entry);
-            return Results.redirect(routes.HomeController.index());
+            return Results.redirect(routes.HomeController.index()).flashing("success", "投稿しました！");
         }
     }
 
@@ -73,7 +73,7 @@ public class HomeController extends Controller {
             Entry entry = entryForm.get();
             entry.setId(savedEntry.getId());
             DB.update(entry);
-            return Results.redirect(routes.HomeController.index());
+            return Results.redirect(routes.HomeController.index()).flashing("success", "編集しました！");
         }
     }
 

@@ -8,7 +8,7 @@
     @form(routes.HomeController.searchDo(searchWord)){
         @CSRF.formField
     
-        @inputText(entryForm("searchInput"))
+        @inputText(entryForm("searchInput"), Symbol("required")-> "required")
         
         <button onclick="location.href='@routes.HomeController.searchDo(searchWord)'">検索</button>
     }

@@ -2,7 +2,7 @@ package controllers;
 
 import models.Entry;
 import models.User;
-import objects.Search;
+import forms.Search;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -33,10 +33,10 @@ public class HomeController extends Controller {
 
     // 新規投稿
     @Security.Authenticated(Secured.class)
-    public Result index(Http.Request request) {
+    public Result toppage(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<Entry> entryForm = formFactory.form(Entry.class);
-        return Results.ok(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
     @Security.Authenticated(Secured.class)
@@ -45,7 +45,7 @@ public class HomeController extends Controller {
         Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.index.render(Entries, entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
         } else {
             Entry entry = entryForm.get();
             // タイムスタンプ外挿
@@ -54,7 +54,7 @@ public class HomeController extends Controller {
             User user = DB.find(User.class).where().eq("id", userId).findOne();
             entry.setUser(user);
             DB.save(entry);
-            return Results.redirect(routes.HomeController.index()).flashing("success", "投稿しました！");
+            return Results.redirect(routes.HomeController.toppage()).flashing("success", "投稿しました！");
         }
     }
 
@@ -82,7 +82,7 @@ public class HomeController extends Controller {
             Entry entry = entryForm.get();
             entry.setId(savedEntry.getId());
             DB.update(entry);
-            return Results.redirect(routes.HomeController.index()).flashing("success", "編集しました！");
+            return Results.redirect(routes.HomeController.toppage()).flashing("success", "編集しました！");
         }
     }
 
@@ -90,7 +90,7 @@ public class HomeController extends Controller {
     @Security.Authenticated(Secured.class)
     public Result delete(Long id) {
         DB.delete(Entry.class, id);
-        return Results.redirect(routes.HomeController.index());
+        return Results.redirect(routes.HomeController.toppage());
     }
 
     // 検索機能

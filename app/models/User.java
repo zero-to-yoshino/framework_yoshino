@@ -18,6 +18,13 @@ public class User extends Model{
     @OneToMany(mappedBy="user")
     private List<Entry> Entries;
 
+    public User(Long id, String name, String email, String password){
+        setUserId(id);
+        setName(name);
+        setEmail(email);
+        setPassword(password);
+    }
+
     public Long getUserId(){
         return id;
     }

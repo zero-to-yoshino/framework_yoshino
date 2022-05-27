@@ -1,0 +1,26 @@
+@import forms.EditUserForm
+@import helper._
+
+@(editUserForm: Form[EditUserForm])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@main("フォーム作成"){
+    @form(routes.UserController.updateUser()){
+        @CSRF.formField
+
+        @inputText(editUserForm("name"))
+
+        @inputText(editUserForm("email"))
+
+        @inputText(editUserForm("prePassword"))
+
+        @inputText(editUserForm("password"))
+
+        <button type="submit">ユーザー情報更新</button>
+    }
+
+    @request.flash.asScala().data.map { case (name, value) =>
+        <div class="@name">@value</div>
+    }
+
+    <button onclick="location.href='@routes.HomeController.toppage()'">一覧へ戻る</button>
+}

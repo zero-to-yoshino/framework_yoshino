@@ -2,7 +2,7 @@ package controllers;
 
 import models.Entry;
 import models.User;
-import objects.Search;
+import forms.Search;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;

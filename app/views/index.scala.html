@@ -4,6 +4,7 @@
 
 @main("投稿掲示板"){
   <h1>投稿掲示板</h1>
+  <h2>@request.session().getOptional("id").orElse("guest")</h2>
   <button onclick="location.href='@routes.SessionController.logout()'">ログアウト</button>
 
   @form(routes.HomeController.save()){

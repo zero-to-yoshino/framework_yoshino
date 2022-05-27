@@ -36,9 +36,11 @@ public class SessionController extends Controller {
             User formUser = loginForm.get();
             User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
             if (foundUser == null) {
-                return Results.redirect(routes.SessionController.login()).flashing("failure", "メールアドレスかパスワードが間違っています。");
+                return Results.redirect(routes.SessionController.login())
+                .flashing("failure", "メールアドレスかパスワードが間違っています。");
             } else {
-                return Results.redirect(routes.HomeController.index()).addingToSession(request, "id", String.valueOf(foundUser.getUserId())).flashing("success", "ログインしました！");
+                return Results.redirect(routes.HomeController.index())
+                .addingToSession(request, "id", String.valueOf(foundUser.getUserId())).flashing("success", "ログインしました！");
             }
         }
     }
@@ -46,24 +48,5 @@ public class SessionController extends Controller {
     // ログアウト処理
     public Result logout(Http.Request request) {
         return Results.redirect(routes.SessionController.login()).removingFromSession(request, "id");
-    }
-
-    // 新規登録処理
-    public Result newUser(Http.Request request) {
-        Form<User> userForm = formFactory.form(User.class);
-        return Results.ok(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
-    }
-
-    public Result save(Http.Request request) {
-        Form<User> userForm = formFactory.form(User.class).bindFromRequest(request);
-        if (userForm.hasErrors()) {
-            // This is the HTTP rendering thread context
-            return badRequest(views.html.new_user.render(userForm, request, messagesApi.preferred(request)));
-        } else {
-            User user = userForm.get();
-            // タイムスタンプ外挿
-            DB.save(user);
-            return Results.redirect(routes.SessionController.login()).flashing("success", "新規登録しました！");
-        }
     }
 }

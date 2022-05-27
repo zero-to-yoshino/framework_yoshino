@@ -4,7 +4,7 @@
 
 @main("新規登録"){
     <h1>新規登録</h1>
-    @form(routes.SessionController.save()){
+    @form(routes.UserController.save()){
 
         @CSRF.formField
 
@@ -16,4 +16,5 @@
     
         <button type="submit">新規登録</button>
     }
+    <button onclick="location.href='@routes.SessionController.login()'">ログイン画面へ戻る</button>
 }

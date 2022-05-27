@@ -39,7 +39,7 @@ public class SessionController extends Controller {
                 return Results.redirect(routes.SessionController.login())
                 .flashing("failure", "メールアドレスかパスワードが間違っています。");
             } else {
-                return Results.redirect(routes.HomeController.index())
+                return Results.redirect(routes.HomeController.toppage())
                 .addingToSession(request, "id", String.valueOf(foundUser.getUserId())).flashing("success", "ログインしました！");
             }
         }

@@ -6,6 +6,7 @@
   <h1>投稿掲示板</h1>
   <h2>@request.session().getOptional("id").orElse("guest")</h2>
   <button onclick="location.href='@routes.SessionController.logout()'">ログアウト</button>
+  <button onclick="location.href='@routes.UserController.editUser()'">ユーザー情報編集</button>
 
   @form(routes.HomeController.save()){
     @CSRF.formField
@@ -27,7 +28,7 @@
 
   @for(entry <- Entries) {
     <p>------------</p>
-    <li>名前：@entry.getId()</li>
+    <li>ユーザー名：@entry.getUser().getName()</li>
     <li>名前：@entry.getName()</li>
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>

@@ -14,6 +14,11 @@ GET     /login/new                  controllers.UserController.newUser(request: 
 
 POST    /login/new                  controllers.UserController.save(request: Request)
 
+# edit user
+GET     /userinfo                   controllers.UserController.editUser(request: Request)
+
+POST    /userinfo                   controllers.UserController.updateUser(request: Request)
+
 # create and make form
 GET     /                           controllers.HomeController.toppage(request: Request)
 

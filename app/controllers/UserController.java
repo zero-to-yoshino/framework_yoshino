@@ -2,6 +2,7 @@ package controllers;
 
 import models.User;
 import models.Entry;
+import forms.EditUserForm;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -42,15 +43,32 @@ public class UserController extends Controller {
     }
 
     // ユーザー情報の更新
-    // @Security.Authenticated(Secured.class)
-    // public Result editUserForm(Http.Request request) {
-    //     Form<User> userForm = formFactory.form(User.class).bindFromRequest(request);
-    //     if (entry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
-    //         Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
-    //         return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
-    //     } else {
-    //         return Results.redirect(routes.SessionController.login())
-    //         .removingFromSession(request, "id").flashing("failure", "不正なアクセスがありました。");
-    //     }
-    // }
+    @Security.Authenticated(Secured.class)
+    public Result editUser(Http.Request request) {
+        Long sessionId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+        User user = DB.find(User.class).where().eq("id", sessionId).findOne();
+        EditUserForm editUserInfo = new EditUserForm(user.getName(), user.getEmail());
+        Form<EditUserForm> editUserForm = formFactory.form(EditUserForm.class).fill(editUserInfo);
+        return Results.ok(views.html.edit_user.render(editUserForm, request, messagesApi.preferred(request)));
+    }
+
+    @Security.Authenticated(Secured.class)
+    public Result updateUser(Http.Request request) {
+        Long sessionId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+        User user = DB.find(User.class).where().eq("id", sessionId).findOne();
+        Form<EditUserForm> editUserForm = formFactory.form(EditUserForm.class).bindFromRequest(request);
+        
+        if (editUserForm.hasErrors()) {
+            return badRequest(views.html.edit_user.render(editUserForm, request, messagesApi.preferred(request)));
+        } else {
+            EditUserForm inputUser = editUserForm.get();
+            if (user.getPassword().equals(inputUser.getPrePassword())) {
+                User updateUser = new User(user.getUserId(), inputUser.getName(), inputUser.getEmail(), inputUser.getPassword());
+                DB.update(updateUser);
+                return Results.redirect(routes.HomeController.toppage()).flashing("success", "ユーザー情報を編集しました！");
+            } else {
+                return Results.redirect(routes.UserController.editUser()).flashing("failure", "パスワードが間違ってます。");
+            }
+        }
+    }
 }

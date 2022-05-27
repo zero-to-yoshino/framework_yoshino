@@ -15,7 +15,7 @@ GET     /login/new                  controllers.UserController.newUser(request: 
 POST    /login/new                  controllers.UserController.save(request: Request)
 
 # create and make form
-GET     /                           controllers.HomeController.index(request: Request)
+GET     /                           controllers.HomeController.toppage(request: Request)
 
 POST    /                           controllers.HomeController.save(request: Request)
 

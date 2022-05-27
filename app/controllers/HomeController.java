@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Entry;
+import models.User;
 import objects.Search;
 import play.mvc.*;
 import play.mvc.Http;
@@ -49,6 +50,9 @@ public class HomeController extends Controller {
             Entry entry = entryForm.get();
             // タイムスタンプ外挿
             entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            Long userId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+            User user = DB.find(User.class).where().eq("id", userId).findOne();
+            entry.setUser(user);
             DB.save(entry);
             return Results.redirect(routes.HomeController.index()).flashing("success", "投稿しました！");
         }
@@ -58,8 +62,13 @@ public class HomeController extends Controller {
     @Security.Authenticated(Secured.class)
     public Result edit(Http.Request request, Long id) {
         Entry entry = DB.find(Entry.class, id);
-        Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
-        return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
+        if (entry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
+            Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
+            return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
+        } else {
+            return Results.redirect(routes.SessionController.login())
+            .removingFromSession(request, "id").flashing("failure", "不正なアクセスがありました。");
+        }
     }
 
     @Security.Authenticated(Secured.class)

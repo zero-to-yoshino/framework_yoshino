@@ -10,9 +10,9 @@ POST    /login                      controllers.SessionController.authenticate(r
 GET     /logout                     controllers.SessionController.logout(request: Request)
 
 # create new user
-GET     /login/new                  controllers.SessionController.newUser(request: Request)
+GET     /login/new                  controllers.UserController.newUser(request: Request)
 
-POST    /login/new                  controllers.SessionController.save(request: Request)
+POST    /login/new                  controllers.UserController.save(request: Request)
 
 # create and make form
 GET     /                           controllers.HomeController.index(request: Request)

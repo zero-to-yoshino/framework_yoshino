@@ -4,7 +4,6 @@
 
 @main("投稿掲示板"){
   <h1>投稿掲示板</h1>
-  <h2>@request.session.get("id")</h2>
   <button onclick="location.href='@routes.SessionController.logout()'">ログアウト</button>
 
   @form(routes.HomeController.save()){
@@ -27,10 +26,13 @@
 
   @for(entry <- Entries) {
     <p>------------</p>
+    <li>名前：@entry.getId()</li>
     <li>名前：@entry.getName()</li>
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>
     <li>投稿日時：@entry.getCreateDate()</li>
-    <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+    @if(entry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
+      <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+    }
   }
 }

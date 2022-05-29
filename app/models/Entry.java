@@ -29,7 +29,7 @@ public class Entry extends Model {
    private User user;
 
    // HomeControllerのsave用
-   public Entry(String name, String title, String message, Date creaDate, User user) {
+   public Entry(String name, String title, String message, Date createDate, User user) {
       setName(name);
       setTitle(title);
       setMessage(message);

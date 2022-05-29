@@ -1,6 +1,7 @@
-@(id: Long, entryForm: Form[EntryForm])(implicit request: Http.Request, messages: play.i18n.Messages)
-
 @import helper._
+@import forms.EntryForm
+
+@(id: Long, entryForm: Form[EntryForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("フォーム作成"){
     @form(routes.HomeController.update(id)){

@@ -28,11 +28,21 @@ public class Entry extends Model {
    @ManyToOne
    private User user;
 
-   // public Entry(String name, String title, String message) {
-   // this.name = name;
-   // this.title = title;
-   // this.message = message;
-   // }
+   // HomeControllerのsave用
+   public Entry(String name, String title, String message, Date creaDate, User user) {
+      setName(name);
+      setTitle(title);
+      setMessage(message);
+      setCreateDate(createDate);
+      setUser(user);
+   }
+
+   // HomeControllerのupdate用
+   public Entry(String name, String title, String message) {
+      setName(name);
+      setTitle(title);
+      setMessage(message);
+   }
 
    public Long getId() {
       return id;

@@ -1,11 +1,9 @@
 package forms;
 
 public class EntryForm {
-    private Long id;
     private String name;
     private String title;
     private String message;
-    private Date createDate;
 
     public EntryForm() {
 
@@ -15,14 +13,6 @@ public class EntryForm {
         setName(name);
         setTitle(title);
         setMessage(message);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -47,13 +37,5 @@ public class EntryForm {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
     }
 }

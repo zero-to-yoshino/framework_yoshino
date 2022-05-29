@@ -2,6 +2,7 @@ package controllers;
 
 import models.Entry;
 import models.User;
+import forms.EntryForm;
 import forms.Search;
 import play.mvc.*;
 import play.mvc.Http;
@@ -12,6 +13,7 @@ import io.ebean.DB;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,24 +37,25 @@ public class HomeController extends Controller {
     @Security.Authenticated(Secured.class)
     public Result toppage(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
-        Form<Entry> entryForm = formFactory.form(Entry.class);
+        Form<EntryForm> entryForm = formFactory.form(EntryForm.class);
         return Results.ok(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
     @Security.Authenticated(Secured.class)
     public Result save(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
-        Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
+        Form<EntryForm> entryForm = formFactory.form(EntryForm.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
             return badRequest(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
         } else {
-            Entry entry = entryForm.get();
-            // タイムスタンプ外挿
-            entry.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            EntryForm inputEntry = entryForm.get();
+            // データベース操作処理
+            Date currentTime = new Timestamp(System.currentTimeMillis());
             Long userId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
             User user = DB.find(User.class).where().eq("id", userId).findOne();
-            entry.setUser(user);
+            Entry entry = new Entry(inputEntry.getName(), inputEntry.getTitle(), 
+                inputEntry.getMessage(), currentTime, user);
             DB.save(entry);
             return Results.redirect(routes.HomeController.toppage()).flashing("success", "投稿しました！");
         }
@@ -61,9 +64,11 @@ public class HomeController extends Controller {
     // 投稿更新
     @Security.Authenticated(Secured.class)
     public Result edit(Http.Request request, Long id) {
-        Entry entry = DB.find(Entry.class, id);
-        if (entry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
-            Form<Entry> entryForm = formFactory.form(Entry.class).fill(entry);
+        // セッション情報との称号
+        Entry savedEntry = DB.find(Entry.class, id);
+        if (savedEntry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
+            Form<EntryForm> entryForm = formFactory.form(EntryForm.class)
+                .fill(new EntryForm(savedEntry.getName(), savedEntry.getTitle(), savedEntry.getMessage()));
             return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
         } else {
             return Results.redirect(routes.SessionController.login())
@@ -73,15 +78,17 @@ public class HomeController extends Controller {
 
     @Security.Authenticated(Secured.class)
     public Result update(Http.Request request, Long id) {
-        Entry savedEntry = DB.find(Entry.class, id);
-        Form<Entry> entryForm = formFactory.form(Entry.class).bindFromRequest(request);
+        Form<EntryForm> entryForm = formFactory.form(EntryForm.class).bindFromRequest(request);
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
             return badRequest(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));
         } else {
-            Entry entry = entryForm.get();
-            entry.setId(savedEntry.getId());
-            DB.update(entry);
+            Entry savedEntry = DB.find(Entry.class, id);
+            EntryForm inputEntry = entryForm.get();
+            savedEntry.setName(inputEntry.getName());
+            savedEntry.setTitle(inputEntry.getTitle());
+            savedEntry.setMessage(inputEntry.getMessage());
+            DB.update(savedEntry);
             return Results.redirect(routes.HomeController.toppage()).flashing("success", "編集しました！");
         }
     }

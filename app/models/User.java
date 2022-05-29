@@ -18,6 +18,14 @@ public class User extends Model{
     @OneToMany(mappedBy="user")
     private List<Entry> Entries;
 
+    // 新規登録用
+    public User(String name, String email, String password) {
+        setName(name);
+        setEmail(email);
+        setPassword(password);
+    }
+
+    // ユーザ情報編集用
     public User(Long id, String name, String email, String password){
         setUserId(id);
         setName(name);

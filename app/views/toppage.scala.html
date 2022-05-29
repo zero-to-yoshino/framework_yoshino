@@ -1,6 +1,6 @@
-@(Entries: java.util.List[Entry], entryForm: Form[Entry])(implicit request: Http.Request, messages: play.i18n.Messages)
-
 @import helper._
+@import forms.EntryForm
+@(Entries: java.util.List[Entry], entryForm: Form[EntryForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("投稿掲示板"){
   <h1>投稿掲示板</h1>

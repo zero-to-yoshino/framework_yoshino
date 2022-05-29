@@ -1,6 +1,7 @@
-@(userForm: Form[User])(implicit request: Http.Request, messages: play.i18n.Messages)
-
 @import helper._
+@import forms.UserForm
+
+@(userForm: Form[UserForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("新規登録"){
     <h1>新規登録</h1>

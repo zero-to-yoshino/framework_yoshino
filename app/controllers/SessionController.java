@@ -2,6 +2,7 @@ package controllers;
 
 import models.User;
 import models.Entry;
+import forms.UserForm;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -24,17 +25,17 @@ public class SessionController extends Controller {
 
     // ログイン処理
     public Result login(Http.Request request) {
-        Form<User> loginForm = formFactory.form(User.class);
+        Form<UserForm> loginForm = formFactory.form(UserForm.class);
         return Results.ok(views.html.login.render(loginForm, request, messagesApi.preferred(request))).withNewSession();
     }
 
     public Result authenticate(Http.Request request) {
-        Form<User> loginForm = formFactory.form(User.class).bindFromRequest(request);
+        Form<UserForm> loginForm = formFactory.form(UserForm.class).bindFromRequest(request);
         if (loginForm.hasErrors()) {
             return badRequest(views.html.login.render(loginForm, request, messagesApi.preferred(request)));
         } else {
-            User formUser = loginForm.get();
-            User foundUser = DB.find(User.class).where().eq("email", formUser.getEmail()).eq("password", formUser.getPassword()).findOne();
+            UserForm inputUser = loginForm.get();
+            User foundUser = DB.find(User.class).where().eq("email", inputUser.getEmail()).eq("password", inputUser.getPassword()).findOne();
             if (foundUser == null) {
                 return Results.redirect(routes.SessionController.login())
                 .flashing("failure", "メールアドレスかパスワードが間違っています。");

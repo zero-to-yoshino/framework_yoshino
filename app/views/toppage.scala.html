@@ -33,7 +33,7 @@
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>
     <li>投稿日時：@entry.getCreateDate()</li>
-    @if(entry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
+    @if(entry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
       <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
     }
   }

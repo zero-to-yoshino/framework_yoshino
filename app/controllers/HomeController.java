@@ -52,7 +52,7 @@ public class HomeController extends Controller {
             EntryForm inputEntry = entryForm.get();
             // データベース操作処理
             Date currentTime = new Timestamp(System.currentTimeMillis());
-            Long userId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+            Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
             User user = DB.find(User.class).where().eq("id", userId).findOne();
             Entry entry = new Entry(inputEntry.getName(), inputEntry.getTitle(), 
                 inputEntry.getMessage(), currentTime, user);
@@ -66,7 +66,7 @@ public class HomeController extends Controller {
     public Result edit(Http.Request request, Long id) {
         // セッション情報との称号
         Entry savedEntry = DB.find(Entry.class, id);
-        if (savedEntry.getUser().getUserId() == Long.parseLong(request.session().getOptional("id").orElse("guest"))) {
+        if (savedEntry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
             Form<EntryForm> entryForm = formFactory.form(EntryForm.class)
                 .fill(new EntryForm(savedEntry.getName(), savedEntry.getTitle(), savedEntry.getMessage()));
             return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));

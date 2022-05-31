@@ -68,7 +68,9 @@ public class HomeController extends Controller {
     public Result edit(Http.Request request, Long id) {
         // セッション情報との称号
         Entry savedEntry = DB.find(Entry.class, id);
-        if (savedEntry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
+        Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
+        User user = DB.find(User.class).where().eq("id", userId).findOne();
+        if (savedEntry.getUser().getUserId() == user.getUserId() || user.getHasAdmin() == true) {
             Form<EntryForm> entryForm = formFactory.form(EntryForm.class)
                 .fill(new EntryForm(savedEntry.getName(), savedEntry.getTitle(), savedEntry.getMessage()));
             return Results.ok(views.html.edit.render(id, entryForm, request, messagesApi.preferred(request)));

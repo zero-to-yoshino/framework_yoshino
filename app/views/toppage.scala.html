@@ -4,41 +4,48 @@
 play.i18n.Messages)
 
 @main("投稿掲示板"){
-<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-  <h1 class="d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">投稿掲示板</h1>
+<header class="bg-dark d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+  <h5 class="text-light d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto">投稿掲示板</h5>
   <ul class="nav nav-pills me-3">
-    <li><button class="btn btn-outline-primary ms-3" onclick="location.href='@routes.SessionController.logout()'">ログアウト</button></li>
-    <li><button class="btn btn-outline-primary ms-3" onclick="location.href='@routes.UserController.editUser()'">ユーザー情報編集</button></li>
-    <li><button class = "btn btn-outline-primary ms-3" onclick="location.href='@routes.HomeController.search()'">投稿検索</button></li>
+    <li><button class="btn btn-outline-light ms-3" onclick="location.href='@routes.SessionController.logout()'">ログアウト</button></li>
+    <li><button class="btn btn-outline-light ms-3" onclick="location.href='@routes.UserController.editUser()'">ユーザー情報編集</button></li>
+    <li><button class = "btn btn-outline-light ms-3" onclick="location.href='@routes.HomeController.search()'">投稿検索</button></li>
   </ul>
 </header>
 
+<div class="ms-3 mb-5 container-lg">
+  @form(routes.HomeController.save()){
+    @CSRF.formField
 
-@form(routes.HomeController.save()){
-@CSRF.formField
+    @inputText(entryForm("name"), Symbol("required")-> "required")
 
-@inputText(entryForm("name"), Symbol("required")-> "required")
+    @inputText(entryForm("title"), Symbol("required")-> "required")
 
-@inputText(entryForm("title"), Symbol("required")-> "required")
+    @inputText(entryForm("message"), Symbol("required")-> "required")
 
-@inputText(entryForm("message"), Symbol("required")-> "required")
-
-<button type="submit">新規投稿</button>
-}
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-outline-dark mt-3" type="submit">新規投稿</button>
+    </div>
+  }
+</div>
 
 @request.flash.asScala().data.map { case (name, value) =>
 <div class="@name">@value</div>
 }
 
-@for(entry <- Entries) { <p>------------</p>
-  <li>名前：@entry.getName()</li>
-  <li>タイトル：@entry.getTitle()</li>
-  <li>メッセージ：@entry.getMessage()</li>
-  <li>投稿日時：@entry.getCreateDate()</li>
-  @if(user.getHasAdmin() == true){
-  <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
-  } else if(entry.getUser().getUserId() == user.getUserId()) {
-  <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
-  }
-  }
+@for(entry <- Entries) { 
+  <div class="mb-3 ms-3">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">名前：      @entry.getName()</li>
+      <li class="list-group-item">タイトル：  @entry.getTitle()</li>
+      <li class="list-group-item">メッセージ：@entry.getMessage()</li>
+      <li class="list-group-item">投稿日時：  @entry.getCreateDate()</li>
+    </ul>
+    @if(user.getHasAdmin() == true){
+      <button class="btn btn-outline-dark mt-3", onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+    } else if(entry.getUser().getUserId() == user.getUserId()) {
+      <button class="btn btn-outline-dark mt-3", onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+    }
+  </div>
+}
 }

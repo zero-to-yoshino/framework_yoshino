@@ -18,6 +18,7 @@ create table user (
   name                          varchar(255),
   email                         varchar(255),
   password                      varchar(255),
+  has_admin                     boolean default false not null,
   constraint pk_user primary key (id)
 );
 

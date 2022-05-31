@@ -19,6 +19,11 @@ GET     /userinfo                   controllers.UserController.editUser(request:
 
 POST    /userinfo                   controllers.UserController.updateUser(request: Request)
 
+# create new admin
+GET     /admin/new                  controllers.AdminController.newAdmin(request: Request)
+
+POST    /admin/new                  controllers.AdminController.save(request: Request)
+
 # create and make form
 GET     /                           controllers.HomeController.toppage(request: Request)
 

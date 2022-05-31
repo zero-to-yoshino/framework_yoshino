@@ -47,7 +47,7 @@ public class UserController extends Controller {
     // ユーザー情報の更新
     @Security.Authenticated(Secured.class)
     public Result editUser(Http.Request request) {
-        Long sessionId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+        Long sessionId = Long.parseLong(request.session().get("id").orElse("guest"));
         User user = DB.find(User.class).where().eq("id", sessionId).findOne();
         EditUserForm editUserInfo = new EditUserForm(user.getName(), user.getEmail());
         Form<EditUserForm> editUserForm = formFactory.form(EditUserForm.class).fill(editUserInfo);
@@ -56,7 +56,7 @@ public class UserController extends Controller {
 
     @Security.Authenticated(Secured.class)
     public Result updateUser(Http.Request request) {
-        Long sessionId = Long.parseLong(request.session().getOptional("id").orElse("guest"));
+        Long sessionId = Long.parseLong(request.session().get("id").orElse("guest"));
         User user = DB.find(User.class).where().eq("id", sessionId).findOne();
         Form<EditUserForm> editUserForm = formFactory.form(EditUserForm.class).bindFromRequest(request);
         

@@ -18,7 +18,7 @@
     
     @form(routes.HomeController.delete(id)){
         @CSRF.formField
-        <button class="btn btn-danger" type="submit">エントリ削除</button>
+        <button type="submit">エントリ削除</button>
     }
 
     <button onclick="location.href='@routes.HomeController.toppage()'">一覧へ戻る</button>

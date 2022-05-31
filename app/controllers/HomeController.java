@@ -38,6 +38,8 @@ public class HomeController extends Controller {
     public Result toppage(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<EntryForm> entryForm = formFactory.form(EntryForm.class);
+        Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
+        User user = DB.find(User.class).where().eq("id", userId).findOne();
         return Results.ok(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
@@ -45,6 +47,8 @@ public class HomeController extends Controller {
     public Result save(Http.Request request) {
         List<Entry> Entries = DB.find(Entry.class).findList();
         Form<EntryForm> entryForm = formFactory.form(EntryForm.class).bindFromRequest(request);
+        Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
+        User user = DB.find(User.class).where().eq("id", userId).findOne();
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
             return badRequest(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
@@ -52,8 +56,6 @@ public class HomeController extends Controller {
             EntryForm inputEntry = entryForm.get();
             // データベース操作処理
             Date currentTime = new Timestamp(System.currentTimeMillis());
-            Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
-            User user = DB.find(User.class).where().eq("id", userId).findOne();
             Entry entry = new Entry(inputEntry.getName(), inputEntry.getTitle(), 
                 inputEntry.getMessage(), currentTime, user);
             DB.save(entry);

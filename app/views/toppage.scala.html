@@ -28,12 +28,14 @@
 
   @for(entry <- Entries) {
     <p>------------</p>
-    <li>ユーザー名：@entry.getUser().getName()</li>
     <li>名前：@entry.getName()</li>
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>
     <li>投稿日時：@entry.getCreateDate()</li>
-    @if(entry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
+    <li>@entry.getUser().getHasAdmin()</li>
+    @if(entry.getUser().getHasAdmin() == true){
+      <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
+    } else if(entry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
       <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
     }
   }

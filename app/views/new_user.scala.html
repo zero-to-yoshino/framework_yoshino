@@ -3,9 +3,8 @@
 
 @(userForm: Form[UserForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
-@main("新規登録"){
-    <h1>新規登録</h1>
-    @form(routes.UserController.save()){
+@userFormBlock(action: play.api.mvc.Call) = {
+    @form(action){
 
         @CSRF.formField
 
@@ -16,6 +15,15 @@
         @inputText(userForm("password"), Symbol("required")-> "required")
     
         <button type="submit">新規登録</button>
+    }
+}
+
+@main("新規登録"){
+    <h1>新規登録</h1>
+    @if(request.path == "/admin/new") {
+        @userFormBlock(routes.AdminController.save())
+    } else {
+        @userFormBlock(routes.UserController.save())
     }
     <button onclick="location.href='@routes.SessionController.login()'">ログイン画面へ戻る</button>
 }

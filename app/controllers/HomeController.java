@@ -40,7 +40,7 @@ public class HomeController extends Controller {
         Form<EntryForm> entryForm = formFactory.form(EntryForm.class);
         Long userId = Long.parseLong(request.session().get("id").orElse("guest"));
         User user = DB.find(User.class).where().eq("id", userId).findOne();
-        return Results.ok(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
+        return Results.ok(views.html.toppage.render(user, Entries, entryForm, request, messagesApi.preferred(request)));
     }
 
     @Security.Authenticated(Secured.class)
@@ -51,7 +51,7 @@ public class HomeController extends Controller {
         User user = DB.find(User.class).where().eq("id", userId).findOne();
         if (entryForm.hasErrors()) {
             // This is the HTTP rendering thread context
-            return badRequest(views.html.toppage.render(Entries, entryForm, request, messagesApi.preferred(request)));
+            return badRequest(views.html.toppage.render(user, Entries, entryForm, request, messagesApi.preferred(request)));
         } else {
             EntryForm inputEntry = entryForm.get();
             // データベース操作処理

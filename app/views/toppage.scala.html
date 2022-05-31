@@ -1,10 +1,9 @@
 @import helper._
 @import forms.EntryForm
-@(Entries: java.util.List[Entry], entryForm: Form[EntryForm])(implicit request: Http.Request, messages: play.i18n.Messages)
+@(user: User, Entries: java.util.List[Entry], entryForm: Form[EntryForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("投稿掲示板"){
   <h1>投稿掲示板</h1>
-  <h2>@request.session().getOptional("id").orElse("guest")</h2>
   <button onclick="location.href='@routes.SessionController.logout()'">ログアウト</button>
   <button onclick="location.href='@routes.UserController.editUser()'">ユーザー情報編集</button>
 
@@ -32,10 +31,9 @@
     <li>タイトル：@entry.getTitle()</li>
     <li>メッセージ：@entry.getMessage()</li>
     <li>投稿日時：@entry.getCreateDate()</li>
-    <li>@entry.getUser().getHasAdmin()</li>
-    @if(entry.getUser().getHasAdmin() == true){
+    @if(user.getHasAdmin() == true){
       <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
-    } else if(entry.getUser().getUserId() == Long.parseLong(request.session().get("id").orElse("guest"))) {
+    } else if(entry.getUser().getUserId() == user.getUserId()) {
       <button onclick="location.href='@routes.HomeController.edit(entry.getId())'">編集へ</button>
     }
   }

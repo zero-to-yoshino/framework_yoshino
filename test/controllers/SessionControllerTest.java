@@ -1,5 +1,7 @@
 package controllers;
 
+import models.User;
+import models.Entry;
 import org.junit.Test;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
@@ -21,12 +23,13 @@ public class SessionControllerTest extends WithApplication {
 
     @Test
     public void セッションがない状態でユーザリソースにアクセスするとログイン画面にリダイレクト() {
-        Http.RequestBuilder request = new Http.RequestBuilder()
+        String[] resourceList = {"", "3/", "search"};
+        for (String resource : resourceList) {
+            Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
-                .uri("/");
-
-        Result result = route(app, request);
-        assertEquals(SEE_OTHER, result.status());
+                .uri("/" + resource);
+            Result result = route(app, request);
+            assertEquals(SEE_OTHER, result.status());
+        }
     }
-
 }

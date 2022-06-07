@@ -18,6 +18,9 @@ public class User extends Model{
     @OneToMany(mappedBy="user")
     private List<Entry> Entries;
     private boolean hasAdmin = false;
+    public User() {
+        
+    }
 
     // 新規登録用
     public User(String name, String email, String password) {

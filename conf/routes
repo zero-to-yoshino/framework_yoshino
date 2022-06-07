@@ -35,9 +35,9 @@ GET     /search                    controllers.HomeController.search(request: Re
 GET     /search/:searchWord        controllers.HomeController.searchDo(request: Request, searchWord: String)
 
 # Edit entry
-GET     /:id/                       controllers.HomeController.edit(request: Request, id:Long)
+GET     /edit/:id                   controllers.HomeController.edit(request: Request, id:Long)
 
-POST    /:id/                       controllers.HomeController.update(request: Request, id:Long)
+POST    /edit/:id                   controllers.HomeController.update(request: Request, id:Long)
 
 # Delete entry
 POST    /:id/delete                 controllers.HomeController.delete(id:Long)

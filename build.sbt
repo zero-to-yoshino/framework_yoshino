@@ -13,5 +13,6 @@ lazy val myProject = (project in file("."))
           javaJdbc,
           "com.h2database" % "h2" % "1.4.192",
           evolutions,
+          "org.hamcrest" % "hamcrest-all" % "1.3",
           ),
     )

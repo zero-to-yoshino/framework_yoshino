@@ -28,9 +28,6 @@ public class Entry extends Model {
    @ManyToOne
    private User user;
 
-   public Entry() {
-      
-   }
 
    // HomeControllerのsave用
    public Entry(String name, String title, String message, Date createDate, User user) {

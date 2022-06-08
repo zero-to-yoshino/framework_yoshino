@@ -1,19 +1,23 @@
 package controllers;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
-import io.ebean.DB;
+
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static play.api.test.CSRFTokenHelper.addCSRFToken;
 import static play.mvc.Http.Status.*;
 import static play.test.Helpers.*;
 
 import java.beans.Transient;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginTest extends WithApplication {
 
@@ -37,14 +41,25 @@ public class LoginTest extends WithApplication {
     }
 
     @Test
+    public void 新規登録のビューが表示されるか() {
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/login/new");
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
+
+    @Test
     public void 新規登録が正しくできるか() {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(POST)
-                .bodyForm(ImmutableMap.of("name", "kosuke", "email", "a@b", "password", "yoshino"))
+                .bodyForm(ImmutableMap.of("name", "kosuke", "email", "", "password", ""))
                 .uri("/login/new");
+        request = addCSRFToken(request);
         Result result = route(app, request);
         assertEquals(SEE_OTHER, result.status());
         assertEquals(result.redirectLocation().get(), "/login");
+        assertEquals(result.flash().get("success").get(), "新規登録しました！");
     }
 
     // @Test

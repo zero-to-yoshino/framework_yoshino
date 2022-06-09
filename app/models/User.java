@@ -4,6 +4,7 @@ import javax.persistence.*;
 // import javax.persistence.Id;
  
 import io.ebean.Model;
+import play.data.validation.Constraints;
 // import io.ebean.annotation.*;
 import java.util.List;
  
@@ -11,9 +12,11 @@ import java.util.List;
 public class User extends Model{
     @Id
     private Long id;
-
+    @Constraints.Required 
     private String name;
+    @Constraints.Required 
     private String email;
+    @Constraints.Required 
     private String password;
     @OneToMany(mappedBy="user")
     private List<Entry> Entries;

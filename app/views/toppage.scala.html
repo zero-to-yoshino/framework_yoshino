@@ -16,7 +16,7 @@ play.i18n.Messages)
   </ul>
 </header>
 <div>
-  <div class="mx-3 mb-5 container-md w-75">
+  <div class="mx-auto mb-5 container-md w-80">
     @form(routes.HomeController.save()){
     @CSRF.formField
 
@@ -44,7 +44,7 @@ play.i18n.Messages)
   }
 
   @for(entry <- Entries) { 
-    <div class="mb-3 ms-3 w-75">
+    <div class="mb-3 mx-auto container-md w-80">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">名前： @entry.getName()</li>
         <li class="list-group-item">タイトル： @entry.getTitle()</li>

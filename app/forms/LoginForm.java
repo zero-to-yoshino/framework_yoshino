@@ -2,29 +2,18 @@ package forms;
 
 import play.data.validation.Constraints;
 
-public class UserForm {
-    @Constraints.Required 
-    private String name;
+public class LoginForm {
     @Constraints.Required 
     private String email;
     @Constraints.Required 
     private String password;
 
-    public UserForm() {
+    public LoginForm() {
     }
 
-    public UserForm(String name, String email, String password){
-        setName(name);
+    public LoginForm(String email, String password){
         setEmail(email);
         setPassword(password);
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
     }
 
     public String getEmail(){

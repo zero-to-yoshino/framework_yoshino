@@ -1,9 +1,15 @@
 package forms;
 
+import play.data.validation.Constraints;
+
 public class EditUserForm {
+    @Constraints.Required 
     private String name;
+    @Constraints.Required 
     private String email;
+    @Constraints.Required 
     private String prePassword;
+    @Constraints.Required 
     private String password;
 
     public EditUserForm() {

@@ -1,7 +1,7 @@
 @import helper._
-@import forms.UserForm
+@import forms.LoginForm
 
-@(loginForm: Form[UserForm])(implicit request: Http.Request, messages: play.i18n.Messages)
+@(loginForm: Form[LoginForm])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @main("ログイン"){
     <h1>ログイン</h1>

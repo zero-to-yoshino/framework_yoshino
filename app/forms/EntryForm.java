@@ -1,8 +1,13 @@
 package forms;
 
+import play.data.validation.Constraints;
+
 public class EntryForm {
+    @Constraints.Required 
     private String name;
+    @Constraints.Required 
     private String title;
+    @Constraints.Required 
     private String message;
 
     public EntryForm() {

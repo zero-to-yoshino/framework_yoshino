@@ -2,7 +2,7 @@ package controllers;
 
 import models.User;
 import models.Entry;
-import forms.UserForm;
+import forms.LoginForm;
 import play.mvc.*;
 import play.mvc.Http;
 import play.data.Form;
@@ -25,16 +25,16 @@ public class SessionController extends Controller {
 
     // ログイン処理
     public Result login(Http.Request request) {
-        Form<UserForm> loginForm = formFactory.form(UserForm.class);
+        Form<LoginForm> loginForm = formFactory.form(LoginForm.class);
         return Results.ok(views.html.login.render(loginForm, request, messagesApi.preferred(request))).withNewSession();
     }
 
     public Result authenticate(Http.Request request) {
-        Form<UserForm> loginForm = formFactory.form(UserForm.class).bindFromRequest(request);
+        Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest(request);
         if (loginForm.hasErrors()) {
             return badRequest(views.html.login.render(loginForm, request, messagesApi.preferred(request)));
         } else {
-            UserForm inputUser = loginForm.get();
+            LoginForm inputUser = loginForm.get();
             User foundUser = DB.find(User.class).where().eq("email", inputUser.getEmail()).eq("password", inputUser.getPassword()).findOne();
             if (foundUser == null) {
                 return Results.redirect(routes.SessionController.login())

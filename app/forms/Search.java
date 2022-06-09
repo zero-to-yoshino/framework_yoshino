@@ -1,8 +1,10 @@
 package forms;
 
+import play.data.validation.Constraints;
 import java.util.List;
 
 public class Search{
+    @Constraints.Required 
     private String searchInput;
     // 将来的なandor検索などを想定した変数
     private boolean andSearch;

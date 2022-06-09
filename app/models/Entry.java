@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.*;
 
 import io.ebean.Model;
-import play.data.validation.Constraints;
 // import io.ebean.annotation.*;
 
 // import play.data.format.Formats.DateTime;
@@ -18,13 +17,10 @@ public class Entry extends Model {
    @Id
    private Long id;
    @NotNull
-   @Constraints.Required 
    private String name;
    @NotNull
-   @Constraints.Required 
    private String title;
    @NotNull
-   @Constraints.Required 
    private String message;
    // @WhenCreated
    private Date createDate;

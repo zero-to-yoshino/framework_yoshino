@@ -18,10 +18,13 @@ public class Entry extends Model {
    @Id
    private Long id;
    @NotNull
+   @Constraints.Required 
    private String name;
    @NotNull
+   @Constraints.Required 
    private String title;
    @NotNull
+   @Constraints.Required 
    private String message;
    // @WhenCreated
    private Date createDate;

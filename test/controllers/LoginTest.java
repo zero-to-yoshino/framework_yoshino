@@ -54,7 +54,7 @@ public class LoginTest extends WithApplication {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(POST)
                 .bodyForm(ImmutableMap.of("name", "kosuke", "email", "", "password", ""))
-                .uri("/login/new");
+                .uri(controllers.routes.UserController.newUser().url());
         request = addCSRFToken(request);
         Result result = route(app, request);
         assertEquals(SEE_OTHER, result.status());

@@ -7,15 +7,19 @@ import io.ebean.Model;
 import play.data.validation.Constraints;
 // import io.ebean.annotation.*;
 import java.util.List;
+import javax.validation.constraints.NotNull;
  
 @Entity
 public class User extends Model{
     @Id
     private Long id;
+    @NotNull
     @Constraints.Required 
     private String name;
+    @NotNull
     @Constraints.Required 
     private String email;
+    @NotNull
     @Constraints.Required 
     private String password;
     @OneToMany(mappedBy="user")

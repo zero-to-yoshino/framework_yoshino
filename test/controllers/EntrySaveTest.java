@@ -4,10 +4,6 @@ import io.ebean.DB;
 import org.junit.*;
 import org.junit.Test;
 import play.Application;
-import play.db.Database;
-import play.db.Databases;
-import play.db.evolutions.*;
-import play.inject.guice.GuiceApplicationBuilder;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
@@ -15,34 +11,38 @@ import models.*;
 
 import static org.junit.Assert.assertEquals;
 import static play.mvc.Http.Status.OK;
-import static play.test.Helpers.GET;
+import static play.test.Helpers.*;
 import static play.test.Helpers.route;
 
-public class EntrySaveTest extends WithApplication{
+import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-    Database database;
+public class EntrySaveTest extends WithApplication {
 
-    @Override
-    protected Application provideApplication() {
-        return new GuiceApplicationBuilder().build();
-    }
-  
-    @Before
-    public void setupDatabase() {
-      database = Databases.inMemory();
-      Evolutions.applyEvolutions(database);
-    }
-  
-    @After
-    public void shutdownDatabase() {
-      Evolutions.cleanupEvolutions(database);
-      database.shutdown();
+    @Test
+    public void テスト前にログイン() {
+        User user = new User("name", "a@b", "pass");
+        DB.save(user);
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(POST)
+                .bodyForm(ImmutableMap.of("email", "a@b", "password", "pass"))
+                .uri(controllers.routes.SessionController.login().url());
+        Result result = route(app, request);
+        assertEquals(SEE_OTHER, result.status());
+        assertEquals(result.redirectLocation().get(), "/");
+        assertEquals(result.flash().get("success").get(), "ログインしました！");
     }
 
     @Test
     public void フォームに正しい項目があるか() {
-        // 正しいユーザでログインができるか();
-        assertEquals(true, true);
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .session("id", "2")
+                .uri("/");
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
     }
-    
+
 }

@@ -47,7 +47,6 @@ public class ModelTest extends WithApplication{
     DB.save(entry);
     List<Entry> Entries = DB.find(Entry.class).findList();
     String name = Entries.get(0).getName();
-    assertEquals(name, null);
     assertEquals(Entries.size(), 1);
   }
 
